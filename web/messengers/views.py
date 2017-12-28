@@ -1,6 +1,5 @@
 import json
 import requests
-import random
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -30,8 +29,7 @@ def post_fb_message(fbid, recevied_message):
     # user_details = requests.get(user_details_url, user_details_params).json()
     # joke_text = 'Meow, {} {}.'.format(user_details['first_name'], user_details['last_name'])
 
-    texts = Vocabulary.objects.all()
-    joke_text = random.choice(texts).text
+    joke_text = Vocabulary.objects.order_by('?').first().text
 
     post_message_url = 'https://graph.facebook.com/v2.11/me/messages?access_token={}'.format(token)
     response_msg = json.dumps({"recipient": {"id": fbid}, "message": {"text": joke_text}})
